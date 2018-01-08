@@ -8,29 +8,46 @@
     <div class='table-cell bg-g'>date_bought</div>
     <div class='table-cell bg-g'>symbol_pair</div>
     <div class='table-cell bg-g'>amount</div>
-    <div class='table-cell bg-g'>avg cost_per_share_btc</div>
-    <div class='table-cell bg-g'>avg cost_per_share_usd</div>
+    <div class='table-cell bg-g'>avg cost_per_share</div>
     <div class='table-cell bg-g'>est_btcusd</div>
     <div class='table-cell bg-g'>totals</div>
     <div class='table-cell bg-g'>current price usd</div>
     <div class='table-cell bg-g'>current price</div>
+    <div class='table-cell bg-g'>est current value usd</div>
     <div class='table-cell bg-g'>exchange</div>
-
   </div>
 </div>
 
-<div class='table table-6'>
-  <input class='table-cell' id='date' type='text' name='date' placeholder='date' required=''>
-  <input class='table-cell' id='symbol' type='text' name='symbol' placeholder='symbol pair' required=''>
-  <input class='table-cell' id='amount' type='number' name='amount' placeholder='amount' required=''>
-  <input class='table-cell' id='cost_btc' type='number' name='cost_btc' placeholder='cost btc'>
-  <input class='table-cell' id='cost_usd' type='number' name='cost_usd' placeholder='cost usd'>
-  <input class='table-cell' id='exchange' type='text' name='exchange' placeholder='exchange'>
+<div class='table table-10' id='totals'>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g' id='total_est_usd_value'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g'></div>
+  <div class='table-cell bg-g' id='total_est_now_usd_value'></div>
+  <div class='table-cell bg-g'></div>
 </div>
-<div class='table table--mobile header'>
-  <button onclick='store()' class='table-cell bg-g submit' id='submit'>submit</button>
-  <div id='submit-notification'></div>
+
+<div id='input'>
+  <div class='table table-6'>
+    <input class='table-cell' id='date' type='text' name='date' placeholder='date' required=''>
+    <input class='table-cell' id='symbol' type='text' name='symbol' placeholder='symbol pair' required=''>
+    <input class='table-cell' id='amount' type='number' name='amount' placeholder='amount' required=''>
+    <input class='table-cell' id='cost_btc' type='number' name='cost_btc' placeholder='cost btc'>
+    <input class='table-cell' id='cost_usd' type='number' name='cost_usd' placeholder='cost usd'>
+    <input class='table-cell' id='exchange' type='text' name='exchange' placeholder='exchange'>
+  </div>
+  <div class='table table--mobile header'>
+    <button onclick='store()' class='table-cell bg-g submit' id='submit'>submit</button>
+    <div id='submit-notification'></div>
+  </div>
 </div>
+
+<button onclick='exportJson()' class='cursor-pointer table-cell' style='height: 60px'>export to json ( backup window.localStorage )</button>
+<div id='export_url'></div>
 
 <!-- <div class='table table-1'>
   <button class='table-cell' onclick='exportJson()'>export as json</button>

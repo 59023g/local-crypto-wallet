@@ -2,6 +2,8 @@
 
 body {
   font-family: monospace;
+  display: flex;
+  flex-direction: column
 }
 
 .table {
@@ -87,6 +89,9 @@ body {
 
   .mobile-cell { border-bottom: 1px solid black }
 
+  #entries { order: 2 }
+  #totals { order: 1; margin-bottom: 20px }
+  #input { order: 3 }
 }
 
 /* Generic */
@@ -103,4 +108,10 @@ input {
   cursor: pointer
 }
 
+.cursor-pointer { cursor: pointer }
+
 .mobile-header { border-bottom: 1px solid white }
+
+.green { color: green }
+.red { color: red }
+.nochange { color: black }
