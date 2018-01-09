@@ -1,51 +1,86 @@
 // client.js
-//
-let socket = new WebSocket( 'ws://localhost:3000' )
+// mep.im
+// coin_wallet-v0
+// 20180801
+// license: MIT
 
-// Connection opened
-socket.addEventListener( 'open', function ( event ) {
-  socket.send( 'client_connected' );
-} );
+/*
+TODO
+- deploy
+- ETH
+- clean up namespace
+- more exchange data
+- smarter historical btc data
+- sort options
+- historical buy/sell
+- cash option
+- keyup interactions on input
+- about page
+- donations
+- https
+*/
 
-// Listen for messages
-socket.addEventListener( 'message', function ( event ) {
-  console.log( 'ws: server message' )
-  handleBinanceTickerData( JSON.parse( event.data ) )
-} );
 
 // init
 window.onload = async () => {
+  await initAndHandleWebSocket()
+  await lookForURLQueryString()
   await renderAllEntries()
-  await lookForQueryString()
+}
+
+/* init webSocket and handle incoming messages
+ */
+const initAndHandleWebSocket = async () => {
+  let socket = new WebSocket( `ws://${ location.host }` )
+  // Connection opened
+  socket.addEventListener( 'open', function ( event ) {
+    socket.send( 'client_connected' );
+  } );
+
+  // Listen for messages
+  socket.addEventListener( 'message', function ( event ) {
+    console.log( 'ws: data received' )
+    handleBinanceTickerData( JSON.parse( event.data ) )
+  } );
 
 }
 
-const lookForQueryString = async () => {
-  // get params
-  let params = new URLSearchParams( document.location.search.substring( 1 ) );
-  let json = JSON.parse( params.get( 'json' ) )
-  if ( json ) {
-    // if json params, load into local storage
-    for ( var i = 0; i < json.length; i++ ) {
-      // check if already exists
-      if ( localStorage.getItem( json[ i ].id ) ) {
-        return
+/*
+ looks for url querystring, if it's there and the localStorage entries do not exist,
+ save to localStorage
+ */
+const lookForURLQueryString = async () => {
+  try {
+    // get params
+    let params = new URLSearchParams( document.location.search.substring( 1 ) );
+    let json = JSON.parse( params.get( 'json' ) )
+    if ( json ) {
+      // if json params, load into local storage
+      for ( var i = 0; i < json.length; i++ ) {
+        // check if already exists
+        if ( localStorage.getItem( json[ i ].id ) ) {
+          return
+        }
+        // TODO maybe do a diff or something
+        localStorage.setItem( json[ i ].id, JSON.stringify( json[ i ] ) )
+        await appendEntryToTable( json[ i ] )
       }
-      localStorage.setItem( json[ i ].id, JSON.stringify( json[ i ] ) )
-      await appendEntryToTable( json[ i ] )
     }
+  } catch ( error ) {
+    console.error( 'lookForURLQueryString()', error )
   }
 }
 
-const store = async () => {
+/*
+
+*/
+const writeToLocalStorage = async () => {
   try {
     let entry = {}
-
     entry.id = await setId()
     entry.date = await validateDate( document.querySelector( '#date' ).value )
     entry.symbol = await validateSymbol( document.querySelector( '#symbol' ).value )
     entry.amount = +document.querySelector( '#amount' ).value
-
     entry.cost_per_share_btc = +document.querySelector( '#cost_btc' ).value
     entry.exchange = document.querySelector( '#exchange' ).value
     entry.est_btcusd = await getEstimateBTCUSD( entry.date )
@@ -61,11 +96,33 @@ const store = async () => {
     clearForm()
 
   } catch ( error ) {
-    console.error( 'store()', error )
+    console.error( 'writeToLocalStorage()', error )
     document.querySelector( '#submit-notification' ).textContent = error
   }
 
 }
+
+// simple id counter based on localStorage length
+const setId = async () => {
+  let localStorageLength = localStorage.length
+  if ( localStorageLength === 0 ) return 0
+  else return localStorageLength++
+}
+
+// basic date validation
+const validateDate = async ( date ) => {
+  let rawDate = new Date( date )
+  if ( !date ) { throw 'Date: Cannot be empty' }
+  if ( isNaN( rawDate ) ) {
+    throw 'Date: Not a number'
+  }
+  // Binance fix where it doesn't include date
+  if ( rawDate.getFullYear() === 2001 ) {
+    rawDate.setFullYear( 2018 )
+  }
+  return Date.parse( rawDate )
+}
+
 
 const exportJson = async () => {
   let entries = []
@@ -74,7 +131,10 @@ const exportJson = async () => {
     entries.push( JSON.parse( localStorage.getItem( [ i ] ) ) )
 
   }
+
+  console.log( `${ location.href }?json=${ JSON.stringify( entries ) }` )
   document.querySelector( '#export_url' ).textContent = `${ location.href }?json=${ JSON.stringify( entries ) }`
+
 }
 
 // TODO refactor
@@ -135,29 +195,29 @@ const handleBinanceTickerData = async ( binanceTickerData ) => {
 
         // btc price - show color based on value change
         if ( now_price_btc > existing_now_price ) {
-          dom_now_price.className = 'table-cell mobile-cell now_price green'
+          dom_now_price.className = 'table-cell mobile-cell highlight-cell now_price green'
         } else if ( now_price_btc < existing_now_price ) {
-          dom_now_price.className = 'table-cell mobile-cell now_price red'
+          dom_now_price.className = 'table-cell mobile-cell now_price highlight-cell red'
         } else {
-          dom_now_price.className = 'table-cell mobile-cell now_price nochange'
+          dom_now_price.className = 'table-cell mobile-cell  highlight-cell now_price nochange'
         }
 
         // current price usd show color based on value change
         if ( now_price_usd > existing_now_price_usd ) {
-          dom_now_price_usd.className = 'table-cell mobile-cell now_price_usd green'
+          dom_now_price_usd.className = 'table-cell mobile-cell highlight-cell now_price_usd green'
         } else if ( now_price_usd < existing_now_price_usd ) {
-          dom_now_price_usd.className = 'table-cell mobile-cell now_price_usd red'
+          dom_now_price_usd.className = 'table-cell mobile-cell highlight-cell now_price_usd red'
         } else {
-          dom_now_price_usd.className = 'table-cell mobile-cell now_price_usd nochange'
+          dom_now_price_usd.className = 'table-cell mobile-cell highlight-cell now_price_usd nochange'
         }
 
         // current price usd show color based on value change
         if ( now_total_usd > existing_total_est_now_usd ) {
-          dom_now_total_usd.className = 'table-cell mobile-cell now_total_usd green'
+          dom_now_total_usd.className = 'table-cell mobile-cell highlight-cell now_total_usd green'
         } else if ( now_total_usd < existing_total_est_now_usd ) {
-          dom_now_total_usd.className = 'table-cell mobile-cell now_total_usd red'
+          dom_now_total_usd.className = 'table-cell mobile-cell highlight-cell now_total_usd red'
         } else {
-          dom_now_total_usd.className = 'table-cell mobile-cell now_total_usd nochange'
+          dom_now_total_usd.className = 'table-cell mobile-cell highlight-cell now_total_usd nochange'
         }
 
         // assign dom value with price
@@ -176,11 +236,11 @@ const handleBinanceTickerData = async ( binanceTickerData ) => {
 
     // current price usd show color based on value change
     if ( total_est_now_usd_value > existing_total_est_now_usd_value ) {
-      dom_total_est_now_usd_value.className = 'table-cell bg-g green'
+      dom_total_est_now_usd_value.className = 'mobile-fs-36 green'
     } else if ( total_est_now_usd_value < existing_total_est_now_usd_value ) {
-      dom_total_est_now_usd_value.className = 'table-cell bg-g red'
+      dom_total_est_now_usd_value.className = 'mobile-fs-36 red'
     } else {
-      dom_total_est_now_usd_value.className = 'table-cell bg-g nochange'
+      dom_total_est_now_usd_value.className = 'mobile-fs-36 nochange'
     }
 
     dom_total_est_usd_value.textContent = `$${ round( total_est_usd_value, 2 ) } `
@@ -191,45 +251,9 @@ const handleBinanceTickerData = async ( binanceTickerData ) => {
 }
 
 
-const setId = async () => {
-  let localStorageLength = localStorage.length
-  if ( localStorageLength === 0 ) return 0
-  else return localStorageLength++
-}
 
-function convertDateToUTC( date ) {
-  return new Date( date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds() );
-}
 
-const validateDate = async ( date ) => {
-  let rawDate = new Date( date )
-
-  if ( !date ) { throw 'Date: Cannot be empty' }
-  if ( isNaN( rawDate ) ) {
-    throw 'Date: Not a number'
-  }
-
-  let dateObj = {
-    year: rawDate.getFullYear(),
-    // month: rawDate.getMonth(),
-    // day: rawDate.getDate(),
-    // hours: rawDate.getHours(),
-    // minutes: rawDate.getMinutes(),
-    // seconds: rawDate.getSeconds(),
-    // month: rawDate.getMonth(),
-    // milliseconds: rawDate.getMilliseconds(),
-  }
-
-  // Binance fix where it doesn't include date
-  if ( dateObj.year === 2001 ) {
-    dateObj.year = 2018
-    rawDate.setFullYear( 2018 )
-  }
-
-  return Date.parse( rawDate )
-
-}
-
+// basic date render for HTML
 const renderDate = async ( date ) => {
   return new Date( date )
 }
@@ -256,34 +280,34 @@ const appendEntryToTable = async ( entry ) => {
   entriesDiv.insertAdjacentHTML( 'beforeend', `
     <div id='entry-${ entry.id }' class='table table-10'>
 
-      <div class="table-cell bg-g mobile-show mobile-header">date</div>
-      <div class="table-cell mobile-cell">${ await renderDate( entry.date ) }</div>
+      <div class="table-cell mobile-show mobile-header">symbol pair</div>
+      <div class="table-cell mobile-cell highlight-cell">${ entry.symbol }</div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">symbol pair</div>
-      <div class="table-cell mobile-cell">${ entry.symbol }</div>
+      <div class="table-cell mobile-show mobile-header">now_price_usd</div>
+      <div class="table-cell mobile-cell now_price_usd highlight-cell"> </div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">amount</div>
+      <div class="table-cell mobile-show mobile-header">now_price</div>
+      <div class="table-cell mobile-cell now_price highlight-cell" > </div>
+
+      <div class="table-cell mobile-show mobile-header">now_total_usd</div>
+      <div class="table-cell mobile-cell now_total_usd highlight-cell"></div>
+
+      <div class="table-cell mobile-show mobile-header">amount</div>
       <div class="table-cell mobile-cell">${ entry.amount }</div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">cost_per_share</div>
+      <div class="table-cell mobile-show mobile-header">cost_per_share</div>
       <div class="table-cell mobile-cell">Ƀ${ entry.cost_per_share_btc } / $${ round( entry.cost_per_share_usd, 4 ) } </div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">est_btcusd</div>
-      <div class="table-cell mobile-cell">$${ entry.est_btcusd }</div>
-
-      <div class="table-cell bg-g mobile-show mobile-header">totals</div>
+      <div class="table-cell mobile-show mobile-header">totals</div>
       <div class="table-cell mobile-cell">Ƀ${ round( entry.total_btc, 4 ) } / $${ round( entry.total_usd, 2 ) } </div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">current price usd</div>
-      <div class="table-cell mobile-cell now_price_usd"> </div>
+      <div class="table-cell mobile-show mobile-header">est_btcusd</div>
+      <div class="table-cell mobile-cell">$${ entry.est_btcusd }</div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">current price</div>
-      <div class="table-cell mobile-cell now_price" > </div>
+      <div class="table-cell mobile-show mobile-header">date</div>
+      <div class="table-cell mobile-cell">${ await renderDate( entry.date ) }</div>
 
-      <div class="table-cell bg-g mobile-show mobile-header">est current value usd</div>
-      <div class="table-cell mobile-cell now_total_usd"></div>
-
-      <div class="table-cell bg-g mobile-show mobile-header">exchange</div>
+      <div class="table-cell mobile-show mobile-header">exchange</div>
       <div class="table-cell table-cell--foot mobile-cell">${ entry.exchange } <div onclick='remove( ${ entry.id }, event )'>del</div></div>
     </div>
   ` )
@@ -340,14 +364,19 @@ document.onkeydown = function KeyPress( e ) {
   // console.log( evtobj )
   // clear localStorage on ctrl+c
   if ( evtobj.keyCode == 67 && evtobj.ctrlKey ) {
-    localStorage.clear();
-    console.info( 'localStorage: cleared' )
+    clearLocalStorage()
   }
   //display all localStorage items ctrl+a
   if ( evtobj.keyCode == 65 && evtobj.ctrlKey ) {
     console.info( 'localStorage: all items' )
     renderAllEntries();
   }
+}
+
+const clearLocalStorage = async () => {
+  console.info( 'localStorage: cleared' )
+  localStorage.clear();
+  document.location.replace( '/' )
 }
 
 function round( value, decimals ) {
