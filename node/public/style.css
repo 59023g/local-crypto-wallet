@@ -13,7 +13,8 @@ body {
   font-family: monospace;
   display: flex;
   flex-direction: column;
-  background: var(--main-bg-color)
+  background: var(--main-bg-color);
+
 }
 
 .table {
@@ -89,8 +90,9 @@ body {
 
 .mobile-hide { display: flex }
 .mobile-show { display: none }
-
-
+.show { display: block }
+.hide { display: none }
+#entries { margin-top: 10px }
 /* MOBILE */
 @media all and (max-width: 800px) {
   body { background: var(--main-bg-color ) }
@@ -124,13 +126,14 @@ body {
   #totals > .table-cell:nth-child(1) { order: 1 }
   #totals > .table-cell:nth-child(2) { order: 2 }
   #totals > .table-cell:nth-child(3) { order: 7 }
-  #totals > .table-cell:nth-child(4) { order: 8 }
-  #totals > .table-cell:nth-child(5) { order: 5 }
+  #totals > .table-cell:nth-child(4) { order: 8 } /* total */
+  #totals > .table-cell:nth-child(5) { order: 9 } /* value */
   #totals > .table-cell:nth-child(6) { order: 6 }
-  #totals > .table-cell:nth-child(7) { order: 9 }
-  #totals > .table-cell:nth-child(8) { order: 4 }
+  #totals > .table-cell:nth-child(7) { order: 5 }
+  #totals > .table-cell:nth-child(8) { order: 10 } /* attrib */
   #totals > .table-cell:nth-child(9) { order: 3 }
-  #totals > .table-cell:nth-child(10) { order: 10 }
+  #totals > .table-cell:nth-child(10) { order: 4 }
+  #totals > .table-cell:nth-child(11) { order: 11 }
 }
 
 /* Generic */
@@ -143,6 +146,9 @@ body {
 
 input {
   border-style: solid;
+  border: none;
+  margin-right: 1px;
+  margin-bottom: 2px;
 }
 
 .submit {

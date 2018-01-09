@@ -125,16 +125,23 @@ const validateDate = async ( date ) => {
 
 
 const exportJson = async () => {
+  'use strict'
   let entries = []
   for ( let i = 0; i < localStorage.length; i++ ) {
     // existing entry data
     entries.push( JSON.parse( localStorage.getItem( [ i ] ) ) )
-
   }
 
-  console.log( `${ location.href }?json=${ JSON.stringify( entries ) }` )
-  document.querySelector( '#export_url' ).textContent = `${ location.href }?json=${ JSON.stringify( entries ) }`
+  let obj = {
+    json: entries
+  }
 
+  let textArea = document.querySelector( '#export_url' )
+  // show textarea, add url, select it, then copy it to clipboard
+  textArea.className = 'show'
+  textArea.value = `${ location.origin }?json=${ JSON.stringify( entries )  }`
+  textArea.select()
+  document.execCommand('copy')
 }
 
 // TODO refactor
@@ -289,11 +296,11 @@ const appendEntryToTable = async ( entry ) => {
       <div class="table-cell mobile-show mobile-header">now_price</div>
       <div class="table-cell mobile-cell now_price highlight-cell" > </div>
 
-      <div class="table-cell mobile-show mobile-header">now_total_usd</div>
-      <div class="table-cell mobile-cell now_total_usd highlight-cell"></div>
-
       <div class="table-cell mobile-show mobile-header">amount</div>
       <div class="table-cell mobile-cell">${ entry.amount }</div>
+
+      <div class="table-cell mobile-show mobile-header">now_total_usd</div>
+      <div class="table-cell mobile-cell now_total_usd highlight-cell"></div>
 
       <div class="table-cell mobile-show mobile-header">cost_per_share</div>
       <div class="table-cell mobile-cell">Ƀ${ entry.cost_per_share_btc } / $${ round( entry.cost_per_share_usd, 4 ) } </div>
