@@ -1,52 +1,66 @@
 <!-- index.html -->
-
-<link type='text/css' href='/style.css' rel='stylesheet' >
+<link type='text/css' href='/style.css' rel='stylesheet'>
 <script type='text/javascript' src='/client.js' charset='utf-8'></script>
+<meta content="width=device-width,user-scalable=no" name="viewport">
+
+<div id=''>
+  <div class='table table-2'>
+    <div class='table-cell bg-aqua logo'></div>
+    <div class='table-cell bg-coral'>coin_wallet-v0</div>
+
+  </div>
+</div>
 
 <div id='entries'>
   <div class='table table-10 mobile-hide'>
-    <div class='table-cell bg-g'>date_bought</div>
-    <div class='table-cell bg-g'>symbol_pair</div>
-    <div class='table-cell bg-g'>amount</div>
-    <div class='table-cell bg-g'>avg cost_per_share</div>
-    <div class='table-cell bg-g'>est_btcusd</div>
-    <div class='table-cell bg-g'>totals</div>
-    <div class='table-cell bg-g'>current price usd</div>
-    <div class='table-cell bg-g'>current price</div>
-    <div class='table-cell bg-g'>est current value usd</div>
-    <div class='table-cell bg-g'>exchange</div>
+    <div class='table-cell'>symbol_pair</div>
+    <div class='table-cell'>now_price_usd</div>
+    <div class='table-cell'>now_price</div>
+    <div class='table-cell'>now_total_usd</div>
+    <div class='table-cell'>amount</div>
+    <div class='table-cell'>avg cost_per_share</div>
+    <div class='table-cell'>totals</div>
+    <div class='table-cell'>est_btcusd</div>
+    <div class='table-cell'>date_bought</div>
+    <div class='table-cell'>exchange</div>
   </div>
 </div>
 
 <div class='table table-10' id='totals'>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g' id='total_est_usd_value'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g'></div>
-  <div class='table-cell bg-g' id='total_est_now_usd_value'></div>
-  <div class='table-cell bg-g'></div>
+  <div class='table-cell'></div>
+  <div class='table-cell'></div>
+  <div class='table-cell'><span class='mobile-show'>total est usd</span></div>
+  <div class='table-cell display-flex fd-column overflow-visible data-bg'>
+    <span id='total_est_now_usd_value' class='mobile-fs-36'></span>
+  </div>
+  <div class='table-cell'><span class='mobile-hide' id='total_est_usd_value'></span></div>
+  <div class='table-cell'></div>
+  <div class='table-cell'>built by <a href='http://mep.im'>hi@mep.im</a> - no data stored on server - <a target='_blank' href='https://github.com/59023g/local-crypto-wallet'>code</a> (7kb) - <a href='https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage' target='_blank'>localStorage</a>
+  </div>
+  <div class='table-cell'></div>
+  <div class='table-cell'></div>
+  <div class='table-cell'></div>
 </div>
 
 <div id='input'>
   <div class='table table-6'>
-    <input class='table-cell' id='date' type='text' name='date' placeholder='date' required=''>
     <input class='table-cell' id='symbol' type='text' name='symbol' placeholder='symbol pair' required=''>
+    <input class='table-cell' id='date' type='text' name='date' placeholder='date' required=''>
     <input class='table-cell' id='amount' type='number' name='amount' placeholder='amount' required=''>
     <input class='table-cell' id='cost_btc' type='number' name='cost_btc' placeholder='cost btc'>
     <input class='table-cell' id='cost_usd' type='number' name='cost_usd' placeholder='cost usd'>
     <input class='table-cell' id='exchange' type='text' name='exchange' placeholder='exchange'>
   </div>
   <div class='table table--mobile header'>
-    <button onclick='store()' class='table-cell bg-g submit' id='submit'>submit</button>
+    <button onclick='writeToLocalStorage()' class='table-cell bg-g submit' id='submit'>submit</button>
     <div id='submit-notification'></div>
+  </div>
+  <div class='table table-3 table--mobile header'>
+    <button id='export' onclick='exportJson()' class='cursor-pointer table-cell' style='height: 60px'>export to json ( backup window.localStorage )</button>
+    <button id='clear' onclick='clearLocalStorage()' class='cursor-pointer table-cell' style='height: 60px'>clearLocalStorage</button>
   </div>
 </div>
 
-<button onclick='exportJson()' class='cursor-pointer table-cell' style='height: 60px'>export to json ( backup window.localStorage )</button>
 <div id='export_url'></div>
 
 <!-- <div class='table table-1'>
