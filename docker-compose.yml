@@ -1,4 +1,0 @@
-node:
-    build: ./node
-    ports:
-        - "3000"
