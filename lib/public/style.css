@@ -1,0 +1,176 @@
+/* style.css */
+:root {
+  /* --main-bg-color: rgb( 120, 120, 120 ) */
+  --main-bg-color: rgb( 65, 65, 65 );
+  --data-bg-color: rgb(95, 95, 95);
+  --data-color-green: rgb(121, 255, 210);
+  --data-color: rgb(236, 236, 236);
+  --non-data-bg-grey: rgb(47, 47, 47);
+  --default-text-color: rgb( 186, 186, 186 )
+}
+
+body {
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  background: var(--main-bg-color);
+
+}
+
+.table {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 0;
+  border-bottom: 2px solid var(--main-bg-color);
+}
+
+.table-cell {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  width: 100%;
+  padding: 10px 12px;
+  overflow: hidden;
+  list-style: none;
+  background-color: white;
+  align-items: flex-start;
+  text-align: left
+}
+
+.table-2>.table-cell {
+  width: 50%;
+}
+
+.table-3>.table-cell {
+  width: 33.33%;
+}
+
+.table-4>.table-cell {
+  width: 25%;
+}
+
+.table-5>.table-cell {
+  width: 20%;
+}
+
+.table-6>.table-cell {
+  width: 16.6%;
+}
+
+.table-7>.table-cell {
+  width: 14.29%;
+}
+
+.table-8>.table-cell {
+  width: 12.5%;
+}
+
+.table-9>.table-cell {
+  width: 11.11%;
+}
+
+.table-10>.table-cell {
+  width: 10%;
+}
+
+
+.table-cell {
+  background-color: var( --non-data-bg-grey );
+  color: var( --default-text-color )
+}
+.data-cell-bg, .data-bg {
+  background-color: var(--data-bg-color)
+}
+
+
+.mobile-hide { display: flex }
+.mobile-show { display: none }
+.show { display: block }
+.hide { display: none }
+#entries { margin-top: 10px }
+/* MOBILE */
+@media all and (max-width: 800px) {
+  body { background: var(--main-bg-color ) }
+  .mobile-hide { display: none }
+  .mobile-show { display: flex }
+
+
+  .table { margin: 0 0 10px 0; }
+  .table > .table-cell {
+    width: 50% !important;
+  }
+
+  /* #entries .table:nth-child( odd ) .table-cell {
+    background-color: white
+  } */
+
+  .mobile-cell {
+    border-bottom: 2px solid var(--main-bg-color);
+    background-color: var(--data-bg-color) !important;
+    color: var(--data-color)
+  }
+
+  .mobile-font-size-36, .mobile-fs-36 { font-size: 36px }
+
+  #entries { order: 2 }
+  #totals { order: 1; margin-bottom: 20px; flex-direction: column }
+  #totals > .table-cell { width: 100% !important }
+  #input { order: 3 }
+  #export { order: 4 }
+
+  #totals > .table-cell:nth-child(1) { order: 1 }
+  #totals > .table-cell:nth-child(2) { order: 2 }
+  #totals > .table-cell:nth-child(3) { order: 7 }
+  #totals > .table-cell:nth-child(4) { order: 8 } /* total */
+  #totals > .table-cell:nth-child(5) { order: 9 } /* value */
+  #totals > .table-cell:nth-child(6) { order: 6 }
+  #totals > .table-cell:nth-child(7) { order: 5 }
+  #totals > .table-cell:nth-child(8) { order: 10 } /* attrib */
+  #totals > .table-cell:nth-child(9) { order: 3 }
+  #totals > .table-cell:nth-child(10) { order: 4 }
+  #totals > .table-cell:nth-child(11) { order: 11 }
+}
+
+/* Generic */
+.background-grey, .bg-g {
+  /* background: #e2e6e9 */
+  background: rgb(47,47,47);
+  color: white
+}
+
+
+input {
+  border-style: solid;
+  border: none;
+  margin-right: 1px;
+  margin-bottom: 2px;
+}
+
+.submit {
+  cursor: pointer
+}
+
+.cursor-pointer { cursor: pointer }
+.highlight-cell { font-size: 16px }
+.mobile-header { border-bottom: 2px solid var(--main-bg-color) }
+a, a:visited { color: var(--data-color-green) }
+.green { color: var(--data-color-green) }
+.red { color: lightcoral }
+.nochange { color: white }
+.display-flex { display: flex }
+.font-size-18, .fs-18 { font-size: 18px }
+.font-size-24, .fs-24 { font-size: 24px }
+.font-size-48, .fs-48 { font-size: 48px }
+.font-size-36, .fs-36 { font-size: 36px }
+.flex-direction-column, .fd-column { flex-direction: column }
+.overflow-visible { overflow: visible; }
+.bg-aqua { background: var(--data-color-green) }
+.bg-coral { background: lightcoral; color: var(--main-bg-color) }
+.bg-white { background: white }
+.color-white { color: white }
+.logo { font-size: 8px; letter-spacing: 5px }
