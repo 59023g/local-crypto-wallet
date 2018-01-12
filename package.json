@@ -1,0 +1,32 @@
+{
+  "name": "coin_wallet",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ENV=dev PORT=3000 supervisor lib/index",
+    "compile-prod": "node_modules/.bin/gulp",
+    "start-prod": "PORT=3000 node build/bundle.js"
+  },
+  "author": "mep.im - michael pierce",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp-concat": "^2.6.1"
+  },
+  "dependencies": {
+    "bole": "^3.0.2",
+    "browserify": "^15.1.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "gulp": "4.0.0",
+    "on-finished": "^2.3.0",
+    "on-headers": "^1.0.1",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "supervisor": "^0.12.0",
+    "uglify-es": "^3.3.5",
+    "uglify-js": "^3.3.5",
+    "watchify": "^3.9.0",
+    "ws": "^4.0.0"
+  }
+}
