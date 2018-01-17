@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ENV=dev PORT=3000 supervisor lib/index",
     "compile-prod": "node_modules/.bin/gulp",
-    "start-prod": "PORT=3000 node build/bundle.js"
+    "start-prod": "PORT=3000 node build/bundle.js",
+    "get-historical-crypto": " node lib/get_historical_crypto"
   },
   "author": "mep.im - michael pierce",
   "license": "MIT",
