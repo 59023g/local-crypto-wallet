@@ -1,9 +1,15 @@
 #!/bin/bash
 
 # ssh-keygen; ssh-copy-id -p 3022 root@localhost
+# vi /etc/ssh/sshd_config permitRootLogin yes
 
 # VB NAT settings: Host: 3022, Guest: 22
-# ssh -p 3022 user@localhost
+#
+# ssh -p 3022 root@localhost "bash -s" < ./setup-remote.sh 'coin_wallet'
+#
+# scp -r -P 3022 ../zip/ root@localhost:~/zip
+# ssh -p 3022 root@localhost "bash -s" < ./deploy.sh 'coin_wallet'
+
 
 # set -e
 
@@ -14,7 +20,7 @@ APP_NAME=$1
 echo "-- installing $APP_NAME dependencies on remote machine --"
 
 apt-get update -y
-apt-get install -y make git
+apt-get install -y make git unzip
 
 echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list.d/sources.list
 apt-get update
@@ -94,57 +100,19 @@ server {
 
 ln -s /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/
 
+rm /etc/nginx/sites-available/default
+
+systemctl restart nginx
+
 
 # if prod
 # TODO self sign test cert
 # https://certbot.eff.org/docs/using.html#certbot-command-line-options
 echo "-- obtain and install certificates -- "
 
-certbot --nginx \
-  --non-interactive \
-  --agree-tos \
-  --email hi@mep.im \
-  --domains $APP_NAME \
-  --test-cert \
-
-
-##
-# APP_DIR=/var/www/myapp
-#
-# apt-get update -y
-#
-# apt-get install -y git make curl
-#
-#
-# ## install certbot
-# add-apt-repository -y ppa:certbot/certbot
-# apt-get update
-# apt-get install python-certbot-nginx
-#
-# ## nginx install
-#
-#
-#
-# ## nginx config
-# /var/www/${ file }
-#
-#
-# ## obtain certificate
-# certbot  -n --agree-tos --email EMAIL --nginx --redirect -d $DOMAIN -d www.$DOOMAIN
-#
-#
-# ## install node js
-# git clone https://github.com/tj/n && \
-#   cd n && \
-#   make install && \
-#   n 8.6.0
-#
-# cd ..
-# rm -r n
-#
-#
-# ## install app
-# cd local-crypto-wallet
-# npm i
-#
-# npm run start-prod
+# certbot --nginx \
+#   --non-interactive \
+#   --agree-tos \
+#   --email hi@mep.im \
+#   --domains $APP_NAME \
+#   --test-cert \
