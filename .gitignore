@@ -2,3 +2,6 @@ node_modules
 build
 .env
 zip
+btc_historical.json
+eth_historical.json
+bin/debian*
