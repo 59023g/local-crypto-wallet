@@ -6,15 +6,19 @@
   --data-color-green: rgb(121, 255, 210);
   --data-color: rgb(236, 236, 236);
   --non-data-bg-grey: rgb(47, 47, 47);
-  --default-text-color: rgb( 186, 186, 186 )
+  --default-text-color: rgb( 244, 244, 244 );
+  --default-font-size: 12px;
+  --default-font: Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace, serif;
 }
 
 body {
-  font-family: monospace;
+  font-family: var(--default-font);
   display: flex;
   flex-direction: column;
   background: var(--main-bg-color);
-
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px
 }
 
 .table {
@@ -22,7 +26,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 0;
   border-bottom: 2px solid var(--main-bg-color);
 }
@@ -39,7 +43,8 @@ body {
   list-style: none;
   background-color: white;
   align-items: flex-start;
-  text-align: left
+  text-align: left;
+  word-break: break-word
 }
 
 .table-2>.table-cell {
@@ -78,6 +83,17 @@ body {
   width: 10%;
 }
 
+.table-11>.table-cell {
+  width: 9.09%;
+}
+
+.table-12>.table-cell {
+  width: 8.3333%;
+}
+
+.table-13>.table-cell {
+  width: 7.69%;
+}
 
 .table-cell {
   background-color: var( --non-data-bg-grey );
@@ -92,7 +108,10 @@ body {
 .mobile-show { display: none }
 .show { display: block }
 .hide { display: none }
+
 #entries { margin-top: 10px }
+.mobile-font-size-36, .mobile-fs-36 { font-size: 16px }
+
 /* MOBILE */
 @media all and (max-width: 800px) {
   body { background: var(--main-bg-color ) }
@@ -100,7 +119,7 @@ body {
   .mobile-show { display: flex }
 
 
-  .table { margin: 0 0 10px 0; }
+  .table { margin: 0 0 10px 0; flex-wrap: wrap }
   .table > .table-cell {
     width: 50% !important;
   }
@@ -147,16 +166,26 @@ body {
 input {
   border-style: solid;
   border: none;
-  margin-right: 1px;
-  margin-bottom: 2px;
+  margin-right: 3px;
+  margin-bottom: 3px;
+  height: 52.5px;
+  font-size: var(--default-font-size);
+  font-family: monospace;
+  cursor: pointer
+  /* background-color: rgb(213,213,213) !important */
 }
 
+#writeToLocalStorage-notification { color: lightcoral }
+
+input:focus { background-color: rgb(235,235,235) !important; color: var( --non-data-bg-grey ) !important;  }
+input:last-child { margin-right: 0px }
+#writeToLocalStorage { height: 52.5px }
 .submit {
   cursor: pointer
 }
-
+/* ;*/
 .cursor-pointer { cursor: pointer }
-.highlight-cell { font-size: 16px }
+.highlight-cell { font-size: 12px }
 .mobile-header { border-bottom: 2px solid var(--main-bg-color) }
 a, a:visited { color: var(--data-color-green) }
 .green { color: var(--data-color-green) }
