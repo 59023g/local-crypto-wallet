@@ -5,3 +5,4 @@ zip
 btc_historical.json
 eth_historical.json
 bin/debian*
+bin/nginx*
