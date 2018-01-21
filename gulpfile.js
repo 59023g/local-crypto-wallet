@@ -1,4 +1,5 @@
 // gulpfile
+// http://clubmate.fi/how-to-zip-and-unzip-files-and-folders-on-your-remote-server/
 require( 'dotenv' ).config()
 
 const gulp = require( 'gulp' )
@@ -38,7 +39,7 @@ const clean = async () => {
 
 // compile app put in build folder, zip
 const compileProdServer = async () => {
-  return pexec( 'node_modules/.bin/browserify --entry lib/index.js --node --exclude utf-8-validate --exclude bufferutil --exclude forever > build/bundle.js' )
+  return pexec( 'node_modules/.bin/browserify --entry lib/index.js --node --exclude utf-8-validate --exclude bufferutil --exclude forever > build/bundle.js && cp package.json build/' )
 }
 
 const compileClient = async () => {
@@ -51,11 +52,14 @@ const zipDir = async () => {
   console.log( process.env.HOST)
   let commit = await pexec( 'git rev-parse HEAD' )
   return pexec( `mkdir zip && zip -r zip/${ commit.slice(0, 7) }.zip build `)
-
 }
 
 // push app to remote, unzip and deploy
+const pushRemote = async() => {
 
+return pexec( 'scp -p 3022 root@localhost:./zip')
+
+}
 
 
 
