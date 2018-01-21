@@ -1,12 +1,13 @@
 {
   "name": "coin_wallet",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "ENV=dev PORT=3000 supervisor lib/index",
     "compile-prod": "node_modules/.bin/gulp",
-    "start-prod": "PORT=3000 node build/bundle.js",
+    "start-prod": "PORT=3000 pm2 start bundle.js",
+    "reload-prod": "pm2 reload bundle",
     "get-historical-crypto": " node lib/get_historical_crypto"
   },
   "author": "mep.im - michael pierce",
@@ -22,6 +23,7 @@
     "gulp": "4.0.0",
     "on-finished": "^2.3.0",
     "on-headers": "^1.0.1",
+    "pm2": "^2.9.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "supervisor": "^0.12.0",
