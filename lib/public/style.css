@@ -1,12 +1,20 @@
 /* style.css */
+
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-backface-visibility: hidden;
+-webkit-transform: translate3d(0,0,0);
+
+}
 :root {
   /* --main-bg-color: rgb( 120, 120, 120 ) */
-  --main-bg-color: rgb( 65, 65, 65 );
-  --data-bg-color: rgb(95, 95, 95);
+  --main-bg-color: rgb( 0, 0, 0 );
+  --header-bg-color: rgb( 26, 26, 26 );
+  --data-bg-color: rgb(41, 41, 41);
   --data-color-green: rgb(121, 255, 210);
   --data-color: rgb(236, 236, 236);
   --non-data-bg-grey: rgb(47, 47, 47);
-  --default-text-color: rgb( 244, 244, 244 );
+  --default-text-color: rgb( 249, 249, 249 );
   --default-font-size: 12px;
   --default-font: Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace, serif;
 }
@@ -28,7 +36,7 @@ body {
   -ms-flex-wrap: wrap;
   flex-wrap: nowrap;
   padding: 0;
-  border-bottom: 2px solid var(--main-bg-color);
+  border-bottom: 3px solid var(--main-bg-color);
 }
 
 .table-cell {
@@ -44,7 +52,7 @@ body {
   background-color: white;
   align-items: flex-start;
   text-align: left;
-  word-break: break-word
+  word-break: inherit
 }
 
 .table-2>.table-cell {
@@ -100,7 +108,7 @@ body {
   color: var( --default-text-color )
 }
 .data-cell-bg, .data-bg {
-  background-color: var(--data-bg-color)
+  background-color: var(--data-bg-color) !important
 }
 
 
@@ -108,12 +116,21 @@ body {
 .mobile-show { display: none }
 .show { display: block }
 .hide { display: none }
+.display-flex, .df { display: flex }
+.justify-content-end, .jf-end { justify-content: flex-end; }
 
-#entries { margin-top: 10px }
-.mobile-font-size-36, .mobile-fs-36 { font-size: 16px }
+.justify-content-start, .jf-start { justify-content: flex-start; }
 
+#entries { margin-top: 0px }
+.header-row .table-cell, .mobile-header, .totals .table-cell { background-color: var(--header-bg-color) }
+
+.mobile-font-size-36, .mobile-fs-36 { font-size: 12px }
+.meta-total-cell { height: 34px }
 /* MOBILE */
 @media all and (max-width: 800px) {
+  #exportJsonUrl, #clearLocalStorage { margin-right: 0 !important; margin-bottom: 3px; width: 100% !important; height: auto !important }
+  input { margin-right: 0 !important; }
+  #input .inputs .table-cell {width: 100% !important}
   body { background: var(--main-bg-color ) }
   .mobile-hide { display: none }
   .mobile-show { display: flex }
@@ -135,6 +152,7 @@ body {
   }
 
   .mobile-font-size-36, .mobile-fs-36 { font-size: 36px }
+  .meta-total-cell { height: 61.5px }
 
   #entries { order: 2 }
   #totals { order: 1; margin-bottom: 20px; flex-direction: column }
@@ -168,21 +186,35 @@ input {
   border: none;
   margin-right: 3px;
   margin-bottom: 3px;
-  height: 52.5px;
-  font-size: var(--default-font-size);
-  font-family: monospace;
+  height: 34px;
+  font-size: 11px;
+  font-family: var(--default-font);
   cursor: pointer
   /* background-color: rgb(213,213,213) !important */
 }
 
 #writeToLocalStorage-notification { color: lightcoral }
 
-input:focus { background-color: rgb(235,235,235) !important; color: var( --non-data-bg-grey ) !important;  }
+input:focus { background-color: rgb(245,245,245) !important; color: var( --non-data-bg-grey ) !important;  }
 input:last-child { margin-right: 0px }
-#writeToLocalStorage { height: 52.5px }
-.submit {
-  cursor: pointer
+#writeToLocalStorage { height: 34px; font-family: var(--default-font);  border: none }
+#exportJsonUrl, #clearLocalStorage { border: none }
+#writeToLocalStorage:hover, #clearLocalStorage:hover, #exportJsonUrl:hover  { background: white; color: black; }
+.submit { cursor: pointer }
+
+button { font-family: var(--default-font); }
+button.delete {
+  border: none;
+  border-radius: 4px;
+  background: rgb(20, 20, 20);
+  color: #9c9c9c;
+  padding: 3px 6px;
+  cursor: pointer;
+  opacity: .5;
+  font-family: var(--default-font)
 }
+
+textarea { height: 200px }
 /* ;*/
 .cursor-pointer { cursor: pointer }
 .highlight-cell { font-size: 12px }
@@ -201,5 +233,6 @@ a, a:visited { color: var(--data-color-green) }
 .bg-aqua { background: var(--data-color-green) }
 .bg-coral { background: lightcoral; color: var(--main-bg-color) }
 .bg-white { background: white }
+.color-black { color: black }
 .color-white { color: white }
 .logo { font-size: 8px; letter-spacing: 5px }
