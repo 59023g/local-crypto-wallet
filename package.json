@@ -19,7 +19,7 @@
     "bole": "^3.0.2",
     "browserify": "^15.1.0",
     "dotenv": "^4.0.0",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "gulp": "4.0.0",
     "on-finished": "^2.3.0",
     "on-headers": "^1.0.1",
